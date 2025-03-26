@@ -1,0 +1,5 @@
+mail:
+  host: "email-smtp.us-east-1.amazonaws.com"
+  port: "2587"
+  username: "AKIA6GIFQIE5VHGEVMH7"
+  password: "BFbj4YdNTIYrkX1+SvumRnbA0br/sUNzrUOztb7SaVkz"
