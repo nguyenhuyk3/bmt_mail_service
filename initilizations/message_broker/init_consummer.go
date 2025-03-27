@@ -11,15 +11,26 @@ import (
 	"github.com/segmentio/kafka-go"
 )
 
-func InitReader() error {
+var topics = []string{
+	global.REGISTRATION_OTP_EMAIL,
+	global.FORGOT_PASSWORD_OTP_EMAIL,
+}
+
+func InitReaders() {
+	log.Println("=============== Mail Service is listening for messages... ===============")
+
+	for _, topic := range topics {
+		go startReader(topic)
+	}
+}
+
+func startReader(topic string) {
 	reader := kafka.NewReader(kafka.ReaderConfig{
 		Brokers: []string{"localhost:9092"},
 		GroupID: global.MAIL_SERVICE_GROUP,
-		Topic:   global.REGISTRATION_OTP_EMAIL,
+		Topic:   topic,
 	})
 	defer reader.Close()
-
-	log.Println("=============== Mail Service is listening for messages... ===============")
 
 	for {
 		message, err := reader.ReadMessage(context.Background())
@@ -34,6 +45,8 @@ func InitReader() error {
 			log.Printf("failed to unmarshal message: %v\n", err)
 			continue
 		}
+
+		// log.Printf("Received message on %s: %v\n", topic, emailMessage)
 
 		go dispatchers.DispatchEmail(emailMessage)
 	}
