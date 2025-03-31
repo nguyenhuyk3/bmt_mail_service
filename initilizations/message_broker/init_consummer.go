@@ -46,8 +46,13 @@ func startReader(topic string) {
 			continue
 		}
 
-		// log.Printf("Received message on %s: %v\n", topic, emailMessage)
-
-		go dispatchers.DispatchEmail(emailMessage)
+		switch topic {
+		case global.REGISTRATION_OTP_EMAIL:
+			go dispatchers.SendRegistrationOtpEmail(emailMessage)
+		case global.FORGOT_PASSWORD_OTP_EMAIL:
+			go dispatchers.SendForgotPasswordOtpEmail(emailMessage)
+		default:
+			log.Printf("unknown topic: %s", topic)
+		}
 	}
 }

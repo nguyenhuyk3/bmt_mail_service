@@ -3,7 +3,6 @@ package messages
 import "encoding/json"
 
 type EmailMessage struct {
-	Type    string          `json:"type"`
 	Payload json.RawMessage `json:"payload"`
 }
 
