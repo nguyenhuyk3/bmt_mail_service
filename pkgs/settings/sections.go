@@ -12,8 +12,6 @@ type serviceSetting struct {
 type serverSetting struct {
 	ServerPort string `mapstructure:"SERVER_PORT"`
 	FromEmail  string `mapstructure:"FROM_EMAIL"`
-	APIKey     string `mapstructure:"API_KEY"`
-	Issuer     string `mapstructure:"ISS"`
 }
 
 type mailSetting struct {
