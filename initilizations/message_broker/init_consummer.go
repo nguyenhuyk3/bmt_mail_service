@@ -26,7 +26,9 @@ func InitReaders() {
 
 func startReader(topic string) {
 	reader := kafka.NewReader(kafka.ReaderConfig{
-		Brokers: []string{"localhost:9092"},
+		Brokers: []string{
+			global.Config.ServiceSetting.KafkaSetting.KafkaBroker_1,
+		},
 		GroupID: global.MAIL_SERVICE_GROUP,
 		Topic:   topic,
 	})

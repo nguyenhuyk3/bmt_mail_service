@@ -6,7 +6,8 @@ type Config struct {
 }
 
 type serviceSetting struct {
-	MailSetting mailSetting `mapstructure:"mail"`
+	MailSetting  mailSetting  `mapstructure:"mail"`
+	KafkaSetting kafkaSetting `mapstructure:"kafka"`
 }
 
 type serverSetting struct {
@@ -19,4 +20,10 @@ type mailSetting struct {
 	Port     int    `mapstructure:"port"`
 	Username string `mapstructure:"username,omitempty"`
 	Password string `mapstructure:"password,omitempty"`
+}
+
+type kafkaSetting struct {
+	KafkaBroker_1 string `mapstructure:"kafka_broker_1"`
+	KafkaBroker_2 string `mapstructure:"kafka_broker_2"`
+	KafkaBroker_3 string `mapstructure:"kafka_broker_3"`
 }
