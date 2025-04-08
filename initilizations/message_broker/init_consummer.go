@@ -7,13 +7,14 @@ import (
 	"context"
 	"encoding/json"
 	"log"
+	"time"
 
 	"github.com/segmentio/kafka-go"
 )
 
 var topics = []string{
-	global.REGISTRATION_OTP_EMAIL,
-	global.FORGOT_PASSWORD_OTP_EMAIL,
+	global.REGISTRATION_OTP_EMAIL_TOPIC,
+	global.FORGOT_PASSWORD_OTP_EMAIL_TOPIC,
 }
 
 func InitReaders() {
@@ -29,8 +30,9 @@ func startReader(topic string) {
 		Brokers: []string{
 			global.Config.ServiceSetting.KafkaSetting.KafkaBroker_1,
 		},
-		GroupID: global.MAIL_SERVICE_GROUP,
-		Topic:   topic,
+		GroupID:        global.MAIL_SERVICE_GROUP,
+		Topic:          topic,
+		CommitInterval: time.Second * 5,
 	})
 	defer reader.Close()
 
@@ -49,9 +51,9 @@ func startReader(topic string) {
 		}
 
 		switch topic {
-		case global.REGISTRATION_OTP_EMAIL:
+		case global.REGISTRATION_OTP_EMAIL_TOPIC:
 			go dispatchers.SendRegistrationOtpEmail(emailMessage)
-		case global.FORGOT_PASSWORD_OTP_EMAIL:
+		case global.FORGOT_PASSWORD_OTP_EMAIL_TOPIC:
 			go dispatchers.SendForgotPasswordOtpEmail(emailMessage)
 		default:
 			log.Printf("unknown topic: %s", topic)
