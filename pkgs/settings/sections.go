@@ -6,8 +6,9 @@ type Config struct {
 }
 
 type serviceSetting struct {
-	MailSetting  mailSetting  `mapstructure:"mail"`
-	KafkaSetting kafkaSetting `mapstructure:"kafka"`
+	MailSetting   mailSetting   `mapstructure:"mail"`
+	KafkaSetting  kafkaSetting  `mapstructure:"kafka"`
+	LoggerSetting LoggerSetting `mapstructure:"zap_log"`
 }
 
 type serverSetting struct {
@@ -26,4 +27,13 @@ type kafkaSetting struct {
 	KafkaBroker_1 string `mapstructure:"kafka_broker_1"`
 	KafkaBroker_2 string `mapstructure:"kafka_broker_2"`
 	KafkaBroker_3 string `mapstructure:"kafka_broker_3"`
+}
+
+type LoggerSetting struct {
+	LogLevel    string `mapstructure:"log_level"` // examples: "debug", "info", "warn", "error"
+	FileLogName string `mapstructure:"file_log_name"`
+	MaxBackups  int    `mapstructure:"max_backups"`
+	MaxAge      int    `mapstructure:"max_age"` // number of days to keep log
+	MaxSize     int    `mapstructure:"max_size"`
+	Compress    bool   `mapstructure:"compress"` // compress old logs
 }

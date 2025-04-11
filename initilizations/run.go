@@ -6,6 +6,7 @@ import (
 
 func Run() {
 	loadConfigs()
+	initLogger()
 
 	messagebroker.InitReaders()
 

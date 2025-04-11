@@ -5,13 +5,16 @@ import (
 	"bmt_mail_service/global"
 	"bmt_mail_service/utils/sender"
 	"encoding/json"
+	"fmt"
 	"log"
+
+	"go.uber.org/zap"
 )
 
 func SendRegistrationOtpEmail(emailMessage messages.EmailMessage) {
 	var otpMsg messages.OtpMessage
 	if err := json.Unmarshal(emailMessage.Payload, &otpMsg); err != nil {
-		log.Printf("failed to unmarshal OTP payload: %v\n", err)
+		global.Logger.Error("failed to unmarshal OTP payload", zap.Any("err", err))
 		return
 	}
 
@@ -26,9 +29,9 @@ func SendRegistrationOtpEmail(emailMessage messages.EmailMessage) {
 			"expiration_time": otpMsg.ExpirationTime,
 		})
 	if err != nil {
-		log.Printf("failed to send Registration OTP email to %s: %v\n", otpMsg.Email, err)
+		global.Logger.Error(fmt.Sprintf("failed to send Forgot Registration OTP email to %s: %v\n", otpMsg.Email, err))
 	} else {
-		log.Printf("successfully sent Registration OTP email to %s\n", otpMsg.Email)
+		global.Logger.Info(fmt.Sprintf("successfully sent Registration OTP email to %s\n", otpMsg.Email))
 	}
 }
 
@@ -49,9 +52,9 @@ func SendForgotPasswordOtpEmail(emailMessage messages.EmailMessage) {
 			"expiration_time": otpMsg.ExpirationTime,
 		})
 	if err != nil {
-		log.Printf("failed to send Forgot Password OTP email to %s: %v\n", otpMsg.Email, err)
+		global.Logger.Error(fmt.Sprintf("failed to send Forgot Password OTP email to %s: %v\n", otpMsg.Email, err))
 	} else {
-		log.Printf("successfully sent Forgot Password OTP email to %s\n", otpMsg.Email)
+		global.Logger.Info(fmt.Sprintf("successfully sent Forgot Password OTP email to %s\n", otpMsg.Email))
 	}
 }
 

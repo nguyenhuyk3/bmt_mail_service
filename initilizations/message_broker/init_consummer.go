@@ -6,10 +6,12 @@ import (
 	"bmt_mail_service/utils/dispatchers"
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"time"
 
 	"github.com/segmentio/kafka-go"
+	"go.uber.org/zap"
 )
 
 var topics = []string{
@@ -39,14 +41,14 @@ func startReader(topic string) {
 	for {
 		message, err := reader.ReadMessage(context.Background())
 		if err != nil {
-			log.Printf("error reading message: %v\n", err)
+			global.Logger.Error("error reading message", zap.Any("err", err))
 			continue
 		}
 
 		var emailMessage messages.EmailMessage
 		err = json.Unmarshal(message.Value, &emailMessage)
 		if err != nil {
-			log.Printf("failed to unmarshal message: %v\n", err)
+			global.Logger.Error("failed to unmarshal message", zap.Any("err", err))
 			continue
 		}
 
@@ -56,7 +58,7 @@ func startReader(topic string) {
 		case global.FORGOT_PASSWORD_OTP_EMAIL_TOPIC:
 			go dispatchers.SendForgotPasswordOtpEmail(emailMessage)
 		default:
-			log.Printf("unknown topic: %s", topic)
+			global.Logger.Error(fmt.Sprintf("unknown topic: %s", topic))
 		}
 	}
 }
