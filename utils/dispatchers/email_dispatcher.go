@@ -29,16 +29,18 @@ func SendRegistrationOtpEmail(emailMessage messages.EmailMessage) {
 			"expiration_time": otpMsg.ExpirationTime,
 		})
 	if err != nil {
-		global.Logger.Error(fmt.Sprintf("failed to send Forgot Registration OTP email to %s: %v\n", otpMsg.Email, err))
+		global.Logger.Error(fmt.Sprintf("failed to send Forgot Registration OTP email to %s: %v", otpMsg.Email, err))
+		log.Printf("failed to send Forgot Registration OTP email to %s: %v", otpMsg.Email, err)
 	} else {
-		global.Logger.Info(fmt.Sprintf("successfully sent Registration OTP email to %s\n", otpMsg.Email))
+		global.Logger.Info(fmt.Sprintf("successfully sent Registration OTP email to %s", otpMsg.Email))
+		log.Printf("successfully sent Registration OTP email to %s", otpMsg.Email)
 	}
 }
 
 func SendForgotPasswordOtpEmail(emailMessage messages.EmailMessage) {
 	var otpMsg messages.OtpMessage
 	if err := json.Unmarshal(emailMessage.Payload, &otpMsg); err != nil {
-		log.Printf("failed to unmarshal OTP payload: %v\n", err)
+		global.Logger.Error("failed to unmarshal OTP payload", zap.Any("err", err))
 		return
 	}
 	err := sender.SendTemplateEmailOtp(
@@ -52,9 +54,11 @@ func SendForgotPasswordOtpEmail(emailMessage messages.EmailMessage) {
 			"expiration_time": otpMsg.ExpirationTime,
 		})
 	if err != nil {
-		global.Logger.Error(fmt.Sprintf("failed to send Forgot Password OTP email to %s: %v\n", otpMsg.Email, err))
+		global.Logger.Error(fmt.Sprintf("failed to send Forgot Password OTP email to %s: %v", otpMsg.Email, err))
+		log.Printf("failed to send Forgot Password OTP email to %s: %v", otpMsg.Email, err)
 	} else {
-		global.Logger.Info(fmt.Sprintf("successfully sent Forgot Password OTP email to %s\n", otpMsg.Email))
+		global.Logger.Info(fmt.Sprintf("successfully sent Forgot Password OTP email to %s", otpMsg.Email))
+		log.Printf("successfully sent Forgot Password OTP email to %s", otpMsg.Email)
 	}
 }
 

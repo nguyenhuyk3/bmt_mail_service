@@ -1,9 +1,0 @@
-mail:
-  host: "email-smtp.us-east-1.amazonaws.com"
-  port: "2587"
-  username: "AKIA6GIFQIE5VHGEVMH7"
-  password: "BFbj4YdNTIYrkX1+SvumRnbA0br/sUNzrUOztb7SaVkz"
-kafka:
-  kafka_broker_1: "localhost:9092"
-  kafka_broker_2: "localhost:9093"
-  kafka_broker_3: "localhost:9094"

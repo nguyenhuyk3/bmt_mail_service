@@ -2,7 +2,6 @@ package loggers
 
 import (
 	"bmt_mail_service/pkgs/settings"
-	"os"
 
 	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
@@ -13,14 +12,14 @@ type LoggerZap struct {
 	*zap.Logger
 }
 
-func removeOldLogIfExists(path string) {
-	if _, err := os.Stat(path); err == nil {
-		_ = os.Remove(path)
-	}
-}
+// func removeOldLogIfExists(path string) {
+// 	if _, err := os.Stat(path); err == nil {
+// 		_ = os.Remove(path)
+// 	}
+// }
 
 func NewLogger(config settings.LoggerSetting) *LoggerZap {
-	removeOldLogIfExists(config.FileLogName)
+	// removeOldLogIfExists(config.FileLogName)
 
 	logLevel := config.LogLevel
 	// debug -> info -> warn -> error -> fatal -> panic
@@ -49,7 +48,7 @@ func NewLogger(config settings.LoggerSetting) *LoggerZap {
 	}
 	core := zapcore.NewCore(
 		encoder,
-		zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout), zapcore.AddSync(&hook)),
+		zapcore.AddSync(&hook),
 		level,
 	)
 
